@@ -30,13 +30,14 @@ public:
     }
 };
 
-Vector squared_vector(Vector* vector_to_square) {
+Vector squared_vector(Vector *vector_to_square)
+{
     Vector vector = *vector_to_square;
 
     return {vector.x * vector.x, vector.y * vector.y, vector.z * vector.z};
 }
 
-Vector calculate_dot_product(Vector* relative_position, Vector* relative_velocity)
+Vector calculate_dot_product(Vector *relative_position, Vector *relative_velocity)
 {
     Vector rel_position = *relative_position;
     Vector rel_velocity = *relative_velocity;
@@ -44,7 +45,7 @@ Vector calculate_dot_product(Vector* relative_position, Vector* relative_velocit
     return {rel_position.x * rel_velocity.x, rel_position.y * rel_velocity.y, rel_position.z * rel_velocity.z};
 }
 
-Vector compute_relative_vector(Vector* a, Vector* b)
+Vector compute_relative_vector(Vector *a, Vector *b)
 {
     Vector vector_a = *a;
     Vector vector_b = *b;
@@ -62,7 +63,7 @@ int main()
 
     // v = v2 - v1 (delta v)
     Vector relative_velocity = compute_relative_vector(&s_a.velocity, &s_b.velocity);
-   
+
     /** Dot Product
      * dot product -> relative position * relative velocity
      * tells us if the velocity is pointing toward or away from
