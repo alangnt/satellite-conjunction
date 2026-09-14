@@ -26,19 +26,13 @@ public:
   }
 };
 
-Vector squared_vector(Vector *vector_to_square) {
-  Vector vector = *vector_to_square;
-
-  return {vector.x * vector.x, vector.y * vector.y, vector.z * vector.z};
-}
-
-Vector calculate_dot_product(Vector *relative_position,
+double calculate_dot_product(Vector *relative_position,
                              Vector *relative_velocity) {
   Vector rel_position = *relative_position;
   Vector rel_velocity = *relative_velocity;
 
-  return {rel_position.x * rel_velocity.x, rel_position.y * rel_velocity.y,
-          rel_position.z * rel_velocity.z};
+  return (rel_position.x * rel_velocity.x) + (rel_position.y * rel_velocity.y) +
+         (rel_position.z * rel_velocity.z);
 }
 
 Vector compute_relative_vector(Vector *a, Vector *b) {
@@ -66,8 +60,14 @@ int main() {
    * tells us if the velocity is pointing toward or away from
    * the current separation vector
    */
-  Vector dot_product =
+  double dot_product =
       calculate_dot_product(&relative_position, &relative_velocity);
+
+  // Will be needed to calculate the time of closest approach
+  double squared_relative_velocity =
+      calculate_dot_product(&relative_velocity, &relative_velocity);
+
+  double time_of_closest_approach = dot_product / squared_relative_velocity;
 
   return 0;
 }
