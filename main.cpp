@@ -61,7 +61,7 @@ double calculate_magnitude(const Vector &relative_position) {
 
 Vector calculate_relative_position_at_closest_approach(
     const Vector &relative_position, const Vector &relative_velocity,
-    const double time_until_closest_approach) {
+    double time_until_closest_approach) {
   double position_x =
       relative_position.x + (relative_velocity.x * time_until_closest_approach);
   double position_y =
@@ -127,7 +127,7 @@ int main() {
   } else {
     // Find time to closest approach (in seconds): t(ca)
     // t(ca) = - (r * v / v * v)
-    double time_to_closest_approach =
+    const double time_to_closest_approach =
         -(dot_product / squared_relative_velocity);
 
     /**
