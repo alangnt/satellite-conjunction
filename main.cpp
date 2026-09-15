@@ -57,7 +57,7 @@ double calculate_minimum_separation(const Vector &relative_position) {
 }
 
 Vector calculate_relative_position_at_closest_approach(
-    Vector &relative_position, Vector &relative_velocity,
+    const Vector &relative_position, const Vector &relative_velocity,
     double time_until_closest_approach) {
   double position_x =
       relative_position.x + (relative_velocity.x * time_until_closest_approach);
@@ -69,12 +69,12 @@ Vector calculate_relative_position_at_closest_approach(
   return {position_x, position_y, position_z};
 }
 
-double calculate_dot_product(Vector &vector_a, Vector &vector_b) {
+double calculate_dot_product(const Vector &vector_a, const Vector &vector_b) {
   return (vector_a.x * vector_b.x) + (vector_a.y * vector_b.y) +
          (vector_a.z * vector_b.z);
 }
 
-Vector calculate_relative_vector(Vector &vector_a, Vector &vector_b) {
+Vector calculate_relative_vector(const Vector &vector_a, const Vector &vector_b) {
   return {vector_b.x - vector_a.x, vector_b.y - vector_a.y,
           vector_b.z - vector_a.z};
 }
