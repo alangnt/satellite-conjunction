@@ -118,6 +118,10 @@ int main() {
     // We calculate their constant separation (in km)
     const double separation = calculate_magnitude(relative_position);
 
+    /**
+     * Now that we have all the data we need,
+     * we can output the results
+     */
     std::cout << "Conjunction Analysis\n";
     std::cout << "--------------------\n";
 
