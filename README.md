@@ -15,6 +15,19 @@ The program estimates the closest approach between two satellites using their cu
 - Handling of near-zero relative velocity
 - Simple status interpretation
 
+## How to run
+
+Make sure you have a C++ compiler installed, then clone the repository and compile `main.cpp`:
+
+```bash
+git clone https://github.com/alangnt/satellite-conjunction.git
+cd satellite-conjunction
+g++ main.cpp -o satellite-conjunction
+./satellite-conjunction
+```
+
+When the program starts, you can either enter your own satellite data or run the included example simulation.
+
 ## How it works
 
 The program first calculates the relative position and relative velocity between two satellites.
