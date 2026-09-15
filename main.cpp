@@ -5,8 +5,8 @@
 /**
  * We call Epsilon a small
  * comparison threshold to avoid using
- * a "== 0" that doesn't make sense
- * when using doubles
+ * a "== 0" that can be unreliable
+ * for calculated floating-point values
  */
 constexpr double TIME_EPSILON = 0.001;
 constexpr double VELOCITY_EPSILON = 1e-12;
