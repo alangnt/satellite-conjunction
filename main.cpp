@@ -47,45 +47,34 @@ std::string define_closest_approach_status(double time_to_closest_approach) {
   }
 }
 
-double calculate_minimum_separation(Vector *relative_position) {
-  Vector rel_position = *relative_position;
-
-  double rel_position_x_squared = rel_position.x * rel_position.x;
-  double rel_position_y_squared = rel_position.y * rel_position.y;
-  double rel_position_z_squared = rel_position.z * rel_position.z;
+double calculate_minimum_separation(const Vector &relative_position) {
+  double rel_position_x_squared = relative_position.x * relative_position.x;
+  double rel_position_y_squared = relative_position.y * relative_position.y;
+  double rel_position_z_squared = relative_position.z * relative_position.z;
 
   return std::sqrt(rel_position_x_squared + rel_position_y_squared +
                    rel_position_z_squared);
 }
 
 Vector calculate_relative_position_at_closest_approach(
-    Vector *relative_position, Vector *relative_velocity,
+    Vector &relative_position, Vector &relative_velocity,
     double time_until_closest_approach) {
-  Vector rel_position = *relative_position;
-  Vector rel_velocity = *relative_velocity;
-
   double position_x =
-      rel_position.x + (rel_velocity.x * time_until_closest_approach);
+      relative_position.x + (relative_velocity.x * time_until_closest_approach);
   double position_y =
-      rel_position.y + (rel_velocity.y * time_until_closest_approach);
+      relative_position.y + (relative_velocity.y * time_until_closest_approach);
   double position_z =
-      rel_position.z + (rel_velocity.z * time_until_closest_approach);
+      relative_position.z + (relative_velocity.z * time_until_closest_approach);
 
   return {position_x, position_y, position_z};
 }
 
-double calculate_dot_product(Vector *a, Vector *b) {
-  Vector vector_a = *a;
-  Vector vector_b = *b;
-
+double calculate_dot_product(Vector &vector_a, Vector &vector_b) {
   return (vector_a.x * vector_b.x) + (vector_a.y * vector_b.y) +
          (vector_a.z * vector_b.z);
 }
 
-Vector compute_relative_vector(Vector *a, Vector *b) {
-  Vector vector_a = *a;
-  Vector vector_b = *b;
-
+Vector calculate_relative_vector(Vector &vector_a, Vector &vector_b) {
   return {vector_b.x - vector_a.x, vector_b.y - vector_a.y,
           vector_b.z - vector_a.z};
 }
@@ -96,11 +85,11 @@ int main() {
 
   // r = r2 - r1 (delta r)
   Vector relative_position =
-      compute_relative_vector(&s_a.position, &s_b.position);
+      calculate_relative_vector(s_a.position, s_b.position);
 
   // v = v2 - v1 (delta v)
   Vector relative_velocity =
-      compute_relative_vector(&s_a.velocity, &s_b.velocity);
+      calculate_relative_vector(s_a.velocity, s_b.velocity);
 
   /** Dot Product
    * dot product -> relative position * relative velocity
@@ -108,11 +97,11 @@ int main() {
    * the current separation vector
    */
   double dot_product =
-      calculate_dot_product(&relative_position, &relative_velocity);
+      calculate_dot_product(relative_position, relative_velocity);
 
   // Will be needed to calculate the time of closest approach
   double squared_relative_velocity =
-      calculate_dot_product(&relative_velocity, &relative_velocity);
+      calculate_dot_product(relative_velocity, relative_velocity);
 
   // Find time to closest approach (in seconds): t(ca)
   // t(ca) = - (r * v / v * v)
@@ -125,7 +114,7 @@ int main() {
    */
   Vector relative_position_at_closest_approach =
       calculate_relative_position_at_closest_approach(
-          &relative_position, &relative_velocity, time_to_closest_approach);
+          relative_position, relative_velocity, time_to_closest_approach);
 
   /**
    * Now that we have our relative position at time of closest approach,
@@ -135,7 +124,7 @@ int main() {
    * the minimum separation between the two objects (in km)
    */
   double minimum_separation =
-      calculate_minimum_separation(&relative_position_at_closest_approach);
+      calculate_minimum_separation(relative_position_at_closest_approach);
 
   /**
    * Thanks to the t(ca) (time to closest approach),
