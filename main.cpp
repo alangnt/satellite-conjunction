@@ -14,7 +14,7 @@ public:
     z = z_coord;
   }
 
-  Vector() : x(0.0), y(0.0), z(0.0) {};
+  Vector() : x(0.0), y(0.0), z(0.0) {}
 };
 
 class Satellite {
