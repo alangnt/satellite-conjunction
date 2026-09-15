@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <string>
 
 class Vector {
 public:
