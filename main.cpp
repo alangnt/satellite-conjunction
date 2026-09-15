@@ -163,7 +163,7 @@ std::array<Satellite, 2> initialize_satellites() {
   std::cout << "1. Enter my own satellite data\n";
   std::cout << "2. Run an example simulation\n\n";
 
-  int initialization_method = select_data_initialization_method();
+  const int initialization_method = select_data_initialization_method();
 
   std::cout << "\n\n";
 
