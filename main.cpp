@@ -127,7 +127,7 @@ int main() {
   } else {
     // Find time to closest approach (in seconds): t(ca)
     // t(ca) = - (r * v / v * v)
-    const double time_to_closest_approach =
+    double time_to_closest_approach =
         -(dot_product / squared_relative_velocity);
 
     /**
