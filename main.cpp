@@ -91,8 +91,8 @@ Vector compute_relative_vector(Vector *a, Vector *b) {
 }
 
 int main() {
-  Satellite s_a({0.0, 0.0, 0.0}, {0.0, 0.0, 0.0});
-  Satellite s_b({1.0, 1.0, 1.0}, {1.0, 1.0, 1.0});
+  Satellite s_a({7000.0, 0.0, 0.0}, {0.0, 7.5, 0.0});
+  Satellite s_b({7005.0, 10.0, 1.0}, {0.0, 7.49, -0.001});
 
   // r = r2 - r1 (delta r)
   Vector relative_position =
@@ -141,6 +141,8 @@ int main() {
    * we can define whether the closest approach already
    * happened, is happening, or when it will be happening again
    */
+  std::string closest_approach_status =
+      define_closest_approach_status(time_to_closest_approach);
 
   /**
    * Now that we have all the data we need,
@@ -152,9 +154,7 @@ int main() {
   std::cout << "Time to closest approach: " << time_to_closest_approach
             << "s\n";
   std::cout << "Minimum separation: " << magnitude << "km\n";
-  std::cout << "Status: "
-            << define_closest_approach_status(time_to_closest_approach)
-            << std::endl;
+  std::cout << "Status: " << closest_approach_status << std::endl;
 
   return 0;
 }
