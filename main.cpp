@@ -117,6 +117,10 @@ int main() {
     // We calculate their constant separation (in km)
     const double separation = calculate_magnitude(relative_position);
 
+    std::cout << "Conjunction Analysis\n";
+    std::cout << "--------------------\n";
+
+    std::cout << "No relative motion detected\n";
     std::cout << "Separation remains constant at " << separation << "km"
               << std::endl;
   } else {
