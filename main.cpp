@@ -130,8 +130,8 @@ Satellite define_satellite(char satellite_index) {
 }
 
 std::array<Satellite, 2> define_satellites() {
-  Satellite satellite_a = define_satellite('A');
-  Satellite satellite_b = define_satellite('B');
+  const Satellite satellite_a = define_satellite('A');
+  const Satellite satellite_b = define_satellite('B');
 
   return {satellite_a, satellite_b};
 }
