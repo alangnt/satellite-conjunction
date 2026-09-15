@@ -103,6 +103,27 @@ double get_double_value(const std::string &input_message) {
   return value;
 }
 
+void display_satellite_information(const Satellite &satellite, char satellite_index) {
+  std::cout << "Satellite " << satellite_index << "\n\n";
+  
+  std::cout << "Position:\n";
+  std::cout << "X position: " << satellite.position.x << " km\n";
+  std::cout << "Y position: " << satellite.position.y << " km\n";
+  std::cout << "Z position: " << satellite.position.z << " km\n\n";
+
+  std::cout << "Velocity:\n";
+  std::cout << "X velocity: " << satellite.velocity.x << " km/s\n";
+  std::cout << "Y velocity: " << satellite.velocity.y << " km/s\n";
+  std::cout << "Z velocity: " << satellite.velocity.z << " km/s\n\n";
+}
+
+void display_satellites_information(const Satellite &satellite_a, const Satellite &satellite_b) {
+  std::cout << "Here are your satellites information:\n\n";
+
+  display_satellite_information(satellite_a, 'A');
+  display_satellite_information(satellite_b, 'B');
+}
+
 Satellite define_satellite(char satellite_index) {
   std::cout << "Satellite " << satellite_index << "\n\n";
 
@@ -182,6 +203,9 @@ int main() {
   const std::array<Satellite, 2> satellites = initialize_satellites();
   const Satellite &satellite_a = satellites[0];
   const Satellite &satellite_b = satellites[1];
+
+  // Display satellites information before the calculation
+  display_satellites_information(satellite_a, satellite_b);
 
   // r = r2 - r1 (delta r)
   const Vector relative_position =
