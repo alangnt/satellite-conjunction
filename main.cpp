@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 class Vector {
 public:
@@ -25,6 +26,32 @@ public:
     velocity = v;
   }
 };
+
+double calculate_magnitude(Vector *relative_position) {
+    Vector rel_position = *relative_position;
+
+    double rel_position_x_squared = rel_position.x * rel_position.x;
+    double rel_position_y_squared = rel_position.y * rel_position.y;
+    double rel_position_z_squared = rel_position.z * rel_position.z;
+
+    return std::sqrt(rel_position_x_squared + rel_position_y_squared + rel_position_z_squared);
+}
+
+Vector calculate_relative_position_at_closest_approach(Vector *relative_position,
+                                    Vector *relative_velocity,
+                                    double time_until_closest_approach) {
+  Vector rel_position = *relative_position;
+  Vector rel_velocity = *relative_velocity;
+
+  double position_x =
+      rel_position.x + (rel_velocity.x * time_until_closest_approach);
+  double position_y =
+      rel_position.y + (rel_velocity.y * time_until_closest_approach);
+  double position_z =
+      rel_position.z + (rel_velocity.z * time_until_closest_approach);
+
+  return {position_x, position_y, position_z};
+}
 
 double calculate_dot_product(Vector *relative_position,
                              Vector *relative_velocity) {
@@ -67,7 +94,22 @@ int main() {
   double squared_relative_velocity =
       calculate_dot_product(&relative_velocity, &relative_velocity);
 
-  double time_of_closest_approach = dot_product / squared_relative_velocity;
+  // Find time until closest approach (in seconds)
+  double time_until_closest_approach = dot_product / squared_relative_velocity;
+
+  // Assuming a constant velocity (acceleration = 0),
+  // we calculate the evolution of the position as is
+  Vector relative_position_at_closest_approach = calculate_relative_position_at_closest_approach(
+      &relative_position, &relative_velocity, time_until_closest_approach);
+
+  /**
+   * Now that we have our relative position at time of closest approach,
+   * we can calculate its magnitude, so we can answer:
+   * "How far apart are they actually"
+   * -> the magnitude d(min) is a scalar distance that gives
+   * the minimum separation between the two objects
+   */
+   double magnitude = calculate_magnitude(&relative_position_at_closest_approach);
 
   return 0;
 }
