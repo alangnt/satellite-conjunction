@@ -109,7 +109,8 @@ int main() {
 
   /**
    * If squared_relative_velocity = 0,
-   * that means both satellites have the same exact velocity
+   * that means their relative velocity is small
+   * enough to treat as 0
    * -> we skip time to closest approach because their
    * relative position never changes anyway
    */
