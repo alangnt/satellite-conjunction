@@ -170,8 +170,8 @@ std::array<Satellite, 2> initialize_satellites() {
   if (initialization_method == 1) {
     return define_satellites();
   } else {
-    Satellite satellite_a({7000.0, 0.0, 0.0}, {0.0, 7.5, 0.0});
-    Satellite satellite_b({7005.0, 10.0, 1.0}, {0.0, 7.49, -0.001});
+    const Satellite satellite_a({7000.0, 0.0, 0.0}, {0.0, 7.5, 0.0});
+    const Satellite satellite_b({7005.0, 10.0, 1.0}, {0.0, 7.49, -0.001});
 
     return {satellite_a, satellite_b};
   }
