@@ -1,7 +1,8 @@
+#include <array>
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <string>
-#include <array>
 
 /**
  * We call Epsilon a small
@@ -85,20 +86,21 @@ Vector calculate_relative_vector(const Vector &vector_a,
 }
 
 double get_double_value(const std::string &input_message) {
-  int value;
+  double value;
 
   while (true) {
     std::cout << input_message;
 
-    if (!(std::cin >> value)) {
-      std::cout << "Invalid input. Try again.\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      continue;
+    if (std::cin >> value) {
+      break;
     }
 
-    return value;
+    std::cout << "Invalid input. Try again.\n";
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
+
+  return value;
 }
 
 Satellite define_satellite(char satellite_index) {
@@ -162,6 +164,8 @@ std::array<Satellite, 2> initialize_satellites() {
   std::cout << "2. Run an example simulation\n\n";
 
   int initialization_method = select_data_initialization_method();
+
+  std::cout << "\n\n";
 
   if (initialization_method == 1) {
     return define_satellites();
