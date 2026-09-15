@@ -73,13 +73,12 @@ Vector calculate_relative_position_at_closest_approach(
   return {position_x, position_y, position_z};
 }
 
-double calculate_dot_product(Vector *relative_position,
-                             Vector *relative_velocity) {
-  Vector rel_position = *relative_position;
-  Vector rel_velocity = *relative_velocity;
+double calculate_dot_product(Vector *a, Vector *b) {
+  Vector vector_a = *a;
+  Vector vector_b = *b;
 
-  return (rel_position.x * rel_velocity.x) + (rel_position.y * rel_velocity.y) +
-         (rel_position.z * rel_velocity.z);
+  return (vector_a.x * vector_b.x) + (vector_a.y * vector_b.y) +
+         (vector_a.z * vector_b.z);
 }
 
 Vector compute_relative_vector(Vector *a, Vector *b) {
