@@ -95,14 +95,17 @@ int main() {
   double squared_relative_velocity =
       calculate_dot_product(&relative_velocity, &relative_velocity);
 
-  // Find time until closest approach (in seconds)
-  double time_until_closest_approach = dot_product / squared_relative_velocity;
+  // Find time to closest approach (in seconds): t(ca)
+  double time_to_closest_approach = dot_product / squared_relative_velocity;
 
-  // Assuming a constant velocity (acceleration = 0),
-  // we calculate the evolution of the position as is
+  /**
+  * Assuming a constant velocity (acceleration = 0),
+  * we can find the position at closest approach with
+  * r(ca) = r + v * t(ca)
+  */
   Vector relative_position_at_closest_approach =
       calculate_relative_position_at_closest_approach(
-          &relative_position, &relative_velocity, time_until_closest_approach);
+          &relative_position, &relative_velocity, time_to_closest_approach);
 
   /**
    * Now that we have our relative position at time of closest approach,
@@ -113,6 +116,17 @@ int main() {
    */
   double magnitude =
       calculate_magnitude(&relative_position_at_closest_approach);
+
+  /**
+   * Now that we have all the data we need,
+   * we can output the results
+   */
+  std::cout << "Conjunction Analysis\n";
+  std::cout << "--------------------\n";
+
+  std::cout << "Time to closest approach: " << time_to_closest_approach << " s\n";
+  std::cout << "Minimum separation: " << magnitude << " km\n";
+  std::cout << "Status: ";
 
   return 0;
 }
