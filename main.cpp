@@ -139,7 +139,7 @@ int main() {
   /**
    * Thanks to the t(ca) (time to closest approach),
    * we can define whether the closest approach already
-   * happened, is happening, or when it will be happening again
+   * happened, is happening, or when it will again
    */
   std::string closest_approach_status =
       define_closest_approach_status(time_to_closest_approach);
