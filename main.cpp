@@ -27,6 +27,19 @@ public:
   }
 };
 
+std::string define_closest_approach_status(double time_to_closest_approach) {
+    if (time_to_closest_approach < 0) {
+        // If t(ca) is < 0, closest approach already happened
+        return "Oh... you missed it!";
+    } else if (time_to_closest_approach == 0) {
+        // If t(ca) = 0, closest approach is currently happening
+        return "They are at their closest approach!";
+    } else {
+        // If t(ca) > 0, closest approach hasn't happened yet
+        return "You're too early!";
+    }
+}
+
 double calculate_magnitude(Vector *relative_position) {
   Vector rel_position = *relative_position;
 
@@ -99,10 +112,10 @@ int main() {
   double time_to_closest_approach = dot_product / squared_relative_velocity;
 
   /**
-  * Assuming a constant velocity (acceleration = 0),
-  * we can find the position at closest approach with
-  * r(ca) = r + v * t(ca)
-  */
+   * Assuming a constant velocity (acceleration = 0),
+   * we can find the position at closest approach with
+   * r(ca) = r + v * t(ca)
+   */
   Vector relative_position_at_closest_approach =
       calculate_relative_position_at_closest_approach(
           &relative_position, &relative_velocity, time_to_closest_approach);
@@ -118,15 +131,22 @@ int main() {
       calculate_magnitude(&relative_position_at_closest_approach);
 
   /**
+   * Thanks to the t(ca) (time to closest approach),
+   * we can define whether the closest approach already
+   * happened, is happening, or when it will be happening again
+   */
+
+  /**
    * Now that we have all the data we need,
    * we can output the results
    */
   std::cout << "Conjunction Analysis\n";
   std::cout << "--------------------\n";
 
-  std::cout << "Time to closest approach: " << time_to_closest_approach << " s\n";
+  std::cout << "Time to closest approach: " << time_to_closest_approach
+            << " s\n";
   std::cout << "Minimum separation: " << magnitude << " km\n";
-  std::cout << "Status: ";
+  std::cout << "Status: " << define_closest_approach_status(time_to_closest_approach);
 
   return 0;
 }
