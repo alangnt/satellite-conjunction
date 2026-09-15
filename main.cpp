@@ -47,7 +47,7 @@ std::string define_closest_approach_status(double time_to_closest_approach) {
   }
 }
 
-double calculate_magnitude(Vector *relative_position) {
+double calculate_minimum_separation(Vector *relative_position) {
   Vector rel_position = *relative_position;
 
   double rel_position_x_squared = rel_position.x * rel_position.x;
@@ -134,8 +134,8 @@ int main() {
    * -> the magnitude d(min) is a scalar distance that gives
    * the minimum separation between the two objects (in km)
    */
-  double magnitude =
-      calculate_magnitude(&relative_position_at_closest_approach);
+  double minimum_separation =
+      calculate_minimum_separation(&relative_position_at_closest_approach);
 
   /**
    * Thanks to the t(ca) (time to closest approach),
@@ -154,7 +154,7 @@ int main() {
 
   std::cout << "Time to closest approach: " << time_to_closest_approach
             << "s\n";
-  std::cout << "Minimum separation: " << magnitude << "km\n";
+  std::cout << "Minimum separation: " << minimum_separation << "km\n";
   std::cout << "Status: " << closest_approach_status << std::endl;
 
   return 0;
