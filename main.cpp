@@ -114,7 +114,8 @@ int main() {
       calculate_dot_product(&relative_velocity, &relative_velocity);
 
   // Find time to closest approach (in seconds): t(ca)
-  double time_to_closest_approach = dot_product / squared_relative_velocity;
+  // t(ca) = - (r * v / v * v)
+  double time_to_closest_approach = -(dot_product / squared_relative_velocity);
 
   /**
    * Assuming a constant velocity (acceleration = 0),
