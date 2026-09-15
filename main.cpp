@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <array>
 
 /**
  * We call Epsilon a small
@@ -83,17 +84,108 @@ Vector calculate_relative_vector(const Vector &vector_a,
           vector_b.z - vector_a.z};
 }
 
+double get_double_value(const std::string &input_message) {
+  int value;
+
+  while (true) {
+    std::cout << input_message;
+
+    if (!(std::cin >> value)) {
+      std::cout << "Invalid input. Try again.\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      continue;
+    }
+
+    return value;
+  }
+}
+
+Satellite define_satellite(char satellite_index) {
+  std::cout << "Satellite " << satellite_index << "\n\n";
+
+  std::cout << "Enter its current position in space (km).\n";
+  std::cout << "Think of X, Y and Z as coordinates on a 3D map.\n\n";
+
+  const double position_x = get_double_value("X position (km): ");
+  const double position_y = get_double_value("Y position (km): ");
+  const double position_z = get_double_value("Z position (km): ");
+
+  std::cout << "\n\n";
+
+  std::cout << "Now enter how fast it is moving along each direction.\n\n";
+
+  const double velocity_x = get_double_value("X velocity (km/s): ");
+  const double velocity_y = get_double_value("Y velocity (km/s): ");
+  const double velocity_z = get_double_value("Z velocity (km/s): ");
+
+  std::cout << "\n\n";
+
+  Satellite satellite({position_x, position_y, position_z},
+                      {velocity_x, velocity_y, velocity_z});
+
+  return satellite;
+}
+
+std::array<Satellite, 2> define_satellites() {
+  Satellite satellite_a = define_satellite('A');
+  Satellite satellite_b = define_satellite('B');
+
+  return {satellite_a, satellite_b};
+}
+
+int select_data_initialization_method() {
+  int choice;
+
+  while (true) {
+    std::cout << "Choose an option: ";
+
+    if (!(std::cin >> choice) || (choice != 1 && choice != 2)) {
+      std::cout << "Invalid input. Try again.\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      continue;
+    }
+
+    return choice;
+  }
+}
+
+std::array<Satellite, 2> initialize_satellites() {
+  std::cout << "Conjunction Analysis\n";
+  std::cout << "--------------------\n\n";
+
+  std::cout << "This program estimates how close two objects moving\n";
+  std::cout << "at constant velocity will come to each other.\n\n";
+
+  std::cout << "1. Enter my own satellite data\n";
+  std::cout << "2. Run an example simulation\n\n";
+
+  int initialization_method = select_data_initialization_method();
+
+  if (initialization_method == 1) {
+    return define_satellites();
+  } else {
+    Satellite satellite_a({7000.0, 0.0, 0.0}, {0.0, 7.5, 0.0});
+    Satellite satellite_b({7005.0, 10.0, 1.0}, {0.0, 7.49, -0.001});
+
+    return {satellite_a, satellite_b};
+  }
+}
+
 int main() {
-  Satellite s_a({7000.0, 0.0, 0.0}, {0.0, 7.5, 0.0});
-  Satellite s_b({7005.0, 10.0, 1.0}, {0.0, 7.49, -0.001});
+  // First, we initialize our satellites
+  const std::array<Satellite, 2> satellites = initialize_satellites();
+  const Satellite &satellite_a = satellites[0];
+  const Satellite &satellite_b = satellites[1];
 
   // r = r2 - r1 (delta r)
   const Vector relative_position =
-      calculate_relative_vector(s_a.position, s_b.position);
+      calculate_relative_vector(satellite_a.position, satellite_b.position);
 
   // v = v2 - v1 (delta v)
   const Vector relative_velocity =
-      calculate_relative_vector(s_a.velocity, s_b.velocity);
+      calculate_relative_vector(satellite_a.velocity, satellite_b.velocity);
 
   /** Dot Product
    * dot product -> relative position * relative velocity
@@ -123,7 +215,7 @@ int main() {
      * we can output the results
      */
     std::cout << "Conjunction Analysis\n";
-    std::cout << "--------------------\n";
+    std::cout << "--------------------\n\n";
 
     std::cout << "No relative motion detected\n";
     std::cout << "Separation remains constant at " << separation << " km"
@@ -166,7 +258,7 @@ int main() {
      * we can output the results
      */
     std::cout << "Conjunction Analysis\n";
-    std::cout << "--------------------\n";
+    std::cout << "--------------------\n\n";
 
     std::cout << "Time to closest approach: " << time_to_closest_approach
               << " s\n";
