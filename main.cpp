@@ -122,7 +122,7 @@ int main() {
     std::cout << "--------------------\n";
 
     std::cout << "No relative motion detected\n";
-    std::cout << "Separation remains constant at " << separation << "km"
+    std::cout << "Separation remains constant at " << separation << " km"
               << std::endl;
   } else {
     // Find time to closest approach (in seconds): t(ca)
@@ -165,8 +165,8 @@ int main() {
     std::cout << "--------------------\n";
 
     std::cout << "Time to closest approach: " << time_to_closest_approach
-              << "s\n";
-    std::cout << "Minimum separation: " << minimum_separation << "km\n";
+              << " s\n";
+    std::cout << "Minimum separation: " << minimum_separation << " km\n";
     std::cout << "Status: " << closest_approach_status << std::endl;
   }
 
