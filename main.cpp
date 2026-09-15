@@ -4,7 +4,7 @@
 
 /**
  * We call Epsilon a small
- * security threshold to avoid using
+ * comparison threshold to avoid using
  * a "== 0" that doesn't make sense
  * when using doubles
  */
