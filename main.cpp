@@ -9,7 +9,7 @@ public:
   double z;
 
   Vector(double x_coord, double y_coord, double z_coord)
-    : x(x_coord), y(y_coord), z(z_coord) {}
+      : x(x_coord), y(y_coord), z(z_coord) {}
 
   Vector() : x(0.0), y(0.0), z(0.0) {}
 };
@@ -19,8 +19,7 @@ public:
   Vector position;
   Vector velocity;
 
-  Satellite(Vector p, Vector v)
-    : position(p), velocity(v) {}
+  Satellite(Vector p, Vector v) : position(p), velocity(v) {}
 };
 
 /**
@@ -30,10 +29,18 @@ public:
  * happen once
  */
 std::string define_closest_approach_status(double time_to_closest_approach) {
-  if (time_to_closest_approach < 0) {
+  /**
+   * We call Epsilon a small
+   * security threshold to avoid using
+   * a "== 0" that doesn't make sense
+   * when using doubles
+   */
+  constexpr double TIME_EPSILON = 0.001;
+
+  if (time_to_closest_approach < -TIME_EPSILON) {
     // If t(ca) is < 0, closest approach already happened
     return "Oh... you missed it!";
-  } else if (time_to_closest_approach == 0) {
+  } else if (std::abs(time_to_closest_approach) < TIME_EPSILON) {
     // If t(ca) = 0, closest approach is currently happening
     return "They are at their closest approach!";
   } else {
@@ -42,7 +49,7 @@ std::string define_closest_approach_status(double time_to_closest_approach) {
   }
 }
 
-double calculate_minimum_separation(const Vector &relative_position) {
+double calculate_magnitude(const Vector &relative_position) {
   double rel_position_x_squared = relative_position.x * relative_position.x;
   double rel_position_y_squared = relative_position.y * relative_position.y;
   double rel_position_z_squared = relative_position.z * relative_position.z;
@@ -121,7 +128,7 @@ int main() {
    * the minimum separation between the two objects (in km)
    */
   const double minimum_separation =
-      calculate_minimum_separation(relative_position_at_closest_approach);
+      calculate_magnitude(relative_position_at_closest_approach);
 
   /**
    * Thanks to the t(ca) (time to closest approach),
