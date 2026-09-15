@@ -2,6 +2,15 @@
 #include <iostream>
 #include <string>
 
+/**
+ * We call Epsilon a small
+ * security threshold to avoid using
+ * a "== 0" that doesn't make sense
+ * when using doubles
+ */
+constexpr double TIME_EPSILON = 0.001;
+constexpr double VELOCITY_EPSILON = 1e-12;
+
 class Vector {
 public:
   double x;
@@ -29,14 +38,6 @@ public:
  * happen once
  */
 std::string define_closest_approach_status(double time_to_closest_approach) {
-  /**
-   * We call Epsilon a small
-   * security threshold to avoid using
-   * a "== 0" that doesn't make sense
-   * when using doubles
-   */
-  constexpr double TIME_EPSILON = 0.001;
-
   if (time_to_closest_approach < -TIME_EPSILON) {
     // If t(ca) is < 0, closest approach already happened
     return "Oh... you missed it!";
@@ -60,7 +61,7 @@ double calculate_magnitude(const Vector &relative_position) {
 
 Vector calculate_relative_position_at_closest_approach(
     const Vector &relative_position, const Vector &relative_velocity,
-    double time_until_closest_approach) {
+    const double time_until_closest_approach) {
   double position_x =
       relative_position.x + (relative_velocity.x * time_until_closest_approach);
   double position_y =
@@ -106,49 +107,63 @@ int main() {
   const double squared_relative_velocity =
       calculate_dot_product(relative_velocity, relative_velocity);
 
-  // Find time to closest approach (in seconds): t(ca)
-  // t(ca) = - (r * v / v * v)
-  const double time_to_closest_approach =
-      -(dot_product / squared_relative_velocity);
-
   /**
-   * Assuming a constant velocity (acceleration = 0),
-   * we can find the position at closest approach with
-   * r(ca) = r + v * t(ca)
+   * If squared_relative_velocity = 0,
+   * that means both satellites have the same exact velocity
+   * -> we skip time to closest approach because their
+   * relative position never changes anyway
    */
-  const Vector relative_position_at_closest_approach =
-      calculate_relative_position_at_closest_approach(
-          relative_position, relative_velocity, time_to_closest_approach);
+  if (squared_relative_velocity < VELOCITY_EPSILON) {
+    // We calculate their constant separation (in km)
+    const double separation = calculate_magnitude(relative_position);
 
-  /**
-   * Now that we have our relative position at time of closest approach,
-   * we can calculate its magnitude, so we can answer:
-   * "How far apart are they actually"
-   * -> the magnitude d(min) is a scalar distance that gives
-   * the minimum separation between the two objects (in km)
-   */
-  const double minimum_separation =
-      calculate_magnitude(relative_position_at_closest_approach);
+    std::cout << "Separation remains constant at " << separation << "km"
+              << std::endl;
+  } else {
+    // Find time to closest approach (in seconds): t(ca)
+    // t(ca) = - (r * v / v * v)
+    const double time_to_closest_approach =
+        -(dot_product / squared_relative_velocity);
 
-  /**
-   * Thanks to the t(ca) (time to closest approach),
-   * we can define whether the closest approach already
-   * happened, is happening, or when it will happen
-   */
-  const std::string closest_approach_status =
-      define_closest_approach_status(time_to_closest_approach);
+    /**
+     * Assuming a constant velocity (acceleration = 0),
+     * we can find the position at closest approach with
+     * r(ca) = r + v * t(ca)
+     */
+    const Vector relative_position_at_closest_approach =
+        calculate_relative_position_at_closest_approach(
+            relative_position, relative_velocity, time_to_closest_approach);
 
-  /**
-   * Now that we have all the data we need,
-   * we can output the results
-   */
-  std::cout << "Conjunction Analysis\n";
-  std::cout << "--------------------\n";
+    /**
+     * Now that we have our relative position at time of closest approach,
+     * we can calculate its magnitude, so we can answer:
+     * "How far apart are they actually"
+     * -> the magnitude d(min) is a scalar distance that gives
+     * the minimum separation between the two objects (in km)
+     */
+    const double minimum_separation =
+        calculate_magnitude(relative_position_at_closest_approach);
 
-  std::cout << "Time to closest approach: " << time_to_closest_approach
-            << "s\n";
-  std::cout << "Minimum separation: " << minimum_separation << "km\n";
-  std::cout << "Status: " << closest_approach_status << std::endl;
+    /**
+     * Thanks to the t(ca) (time to closest approach),
+     * we can define whether the closest approach already
+     * happened, is happening, or when it will happen
+     */
+    const std::string closest_approach_status =
+        define_closest_approach_status(time_to_closest_approach);
+
+    /**
+     * Now that we have all the data we need,
+     * we can output the results
+     */
+    std::cout << "Conjunction Analysis\n";
+    std::cout << "--------------------\n";
+
+    std::cout << "Time to closest approach: " << time_to_closest_approach
+              << "s\n";
+    std::cout << "Minimum separation: " << minimum_separation << "km\n";
+    std::cout << "Status: " << closest_approach_status << std::endl;
+  }
 
   return 0;
 }
